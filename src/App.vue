@@ -11,6 +11,7 @@
         row-key="id"
         dark
       >
+        <template #loading> <q-inner-loading showing color="secondary" /> </template>
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="id" :props="props" class="text-cell">{{ props.row.id }}</q-td>
@@ -165,6 +166,7 @@ const calculateTotalRating = (reviews: Review[]) => {
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
+
 .container .q-table__title
   font-size: x-large
   font-weight: bold
