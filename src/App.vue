@@ -87,11 +87,9 @@
             <q-avatar icon="check_circle" color="positive" text-color="white" />
             <span class="q-ml-sm">Item deleted successfully</span>
           </q-card-section>
-          <!-- <q-card-actions align="right">
-            <q-btn flat label="Close" color="white" v-close-popup />
-          </q-card-actions> -->
         </q-card>
       </q-dialog>
+      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
   </div>
 </template>
@@ -105,6 +103,7 @@ import { type QTableProps } from 'quasar'
 const productStore = useProductStore()
 const products = ref<Product[]>([])
 const loading = ref(true)
+const errorMessage = ref<string | null>(null)
 const confirmDialog = ref({
   visible: false,
   row: {} as Product
@@ -184,6 +183,7 @@ onMounted(async () => {
   await productStore.fetchProducts()
   products.value = productStore.products
   loading.value = false
+  errorMessage.value = productStore.errorMessage
 })
 
 const openConfirmDialog = (row: Product) => {

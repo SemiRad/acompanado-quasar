@@ -4,15 +4,17 @@ import { type Product } from '@/types/Product'
 
 export const useProductStore = defineStore('product', {
   state: () => ({
-    products: [] as Product[]
+    products: [] as Product[],
+    errorMessage: '' as string | null
   }),
   actions: {
     async fetchProducts() {
       try {
         const response = await axios.get('https://dummyjson.com/products')
         this.products = response.data.products
+        this.errorMessage = null
       } catch (error) {
-        console.error('Error fetching products:', error)
+        this.errorMessage = 'Error fetching products'
       }
     },
     deleteProduct(productId: number) {
