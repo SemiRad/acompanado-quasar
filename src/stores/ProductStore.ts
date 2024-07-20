@@ -17,7 +17,6 @@ export const useProductStore = defineStore('product', {
     },
     deleteProduct(productId: number) {
       this.products = this.products.filter((product) => product.id !== productId)
-      console.log(`Deleted product with ID: ${productId}`)
     }
   }
 })
