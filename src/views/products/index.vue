@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Products />
+    <productTable />
   </div>
 </template>
 
 <script setup lang="ts">
-import Products from '@/views/products/index.vue'
+import productTable from '@/components/products/product-table.vue'
 </script>
 
 <style scoped></style>
