@@ -55,11 +55,43 @@
               calculateTotalRating(props.row.reviews)
             }}</q-td>
             <q-td key="actions" :props="props" class="text-cell">
-              <q-btn flat color="red" icon="delete" @click="deleteProduct(props.row.id)" />
+              <q-btn color="negative" icon="delete" @click="openConfirmDialog(props.row)" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+      <q-dialog v-model="confirmDialog.visible" persistent>
+        <q-card dark>
+          <q-card-section class="row items-center">
+            <q-avatar icon="warning" color="negative" text-color="white" />
+            <span class="q-ml-sm"
+              >You will delete item
+              <span class="text-uppercase text-weight-bold text-body1"
+                >#{{ confirmDialog.row.sku }}</span
+              ><br />
+              Product name:
+              <span class="text-uppercase text-weight-bold text-body1">{{
+                confirmDialog.row.title
+              }}</span>
+            </span>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Cancel" color="white" v-close-popup />
+            <q-btn flat label="Confirm" color="white" @click="handleDeleteConfirm" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <q-dialog v-model="successDialog.visible" class="custom-dialog-bg">
+        <q-card dark>
+          <q-card-section class="row items-center">
+            <q-avatar icon="check_circle" color="positive" text-color="white" />
+            <span class="q-ml-sm">Item deleted successfully</span>
+          </q-card-section>
+          <!-- <q-card-actions align="right">
+            <q-btn flat label="Close" color="white" v-close-popup />
+          </q-card-actions> -->
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -73,6 +105,13 @@ import { type QTableProps } from 'quasar'
 const productStore = useProductStore()
 const products = ref<Product[]>([])
 const loading = ref(true)
+const confirmDialog = ref({
+  visible: false,
+  row: {} as Product
+})
+const successDialog = ref({
+  visible: false
+})
 
 const columns: QTableProps['columns'] = [
   {
@@ -146,6 +185,16 @@ onMounted(async () => {
   products.value = productStore.products
   loading.value = false
 })
+
+const openConfirmDialog = (row: Product) => {
+  confirmDialog.value.row = row
+  confirmDialog.value.visible = true
+}
+
+const handleDeleteConfirm = () => {
+  deleteProduct(confirmDialog.value.row.id)
+  successDialog.value.visible = true
+}
 
 const deleteProduct = (productId: number) => {
   productStore.deleteProduct(productId)
