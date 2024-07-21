@@ -97,7 +97,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useProductStore } from '@/stores/product-store'
-import type { Review, Product } from '@/types/Product'
+import type { Review, Product } from '@/types/product'
 import { type QTableProps } from 'quasar'
 
 const productStore = useProductStore()
